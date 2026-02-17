@@ -1,107 +1,97 @@
-# DS_60_webinar
 
+# Cheat Sheet: Flujo de Trabajo con uv
 
-# Guía de Configuración del Entorno de Desarrollo
-
-Este documento proporciona las instrucciones necesarias para configurar el entorno virtual y las dependencias del proyecto utilizando dos métodos: el módulo estándar de Python y la herramienta optimizada `uv`.
+Esta guía rápida resume las mejores prácticas y comandos esenciales para gestionar proyectos de Python utilizando `uv`.
 
 ---
 
-## 1. Configuración con Python `venv` (Estándar)
+## 🚀 Comandos Principales
 
-Sigue estos pasos para crear y activar un entorno virtual utilizando el módulo nativo de Python.
-
-### Paso 1: Crear el entorno virtual
-Ejecuta el siguiente comando en la raíz de tu proyecto:
+### ¿Cuándo usar `uv init`?
+Se utiliza al **inicio de un nuevo proyecto**. Crea la estructura básica, incluyendo un archivo `pyproject.toml`, un archivo `.python-version` y un `hello.py` de ejemplo.
 ```bash
-python -m venv .venv
-
+uv init mi-proyecto
 ```
+Pero si ya existe archivos .py en el proyecto ya no crea  hello.py.
 
-### Paso 2: Activar el entorno
+### ¿Cuándo usar `uv venv`?
 
-Dependiendo de tu sistema operativo, utiliza el comando correspondiente:
+Se usa para **crear manualmente un entorno virtual** `.venv`. Aunque comandos como `uv run` o `uv sync` lo crean automáticamente si no existe, `uv venv` te permite especificar una versión de Python concreta.
 
-* **Windows (PowerShell):**
-```powershell
-.\.venv\Scripts\Activate.ps1
-
+```bash
+uv venv --python 3.12
 ```
+En nuestro caso  solo tendremos que  agregar las dependencia dentro de `pyproject.toml` y correr `uv sync` y con eso  se creara nuestro ambiente virtual automaticamente
 
+---
+### ¿Cómo activar un ambiente ya creado?
 
-* **macOS / Linux:**
+Si ya se ejecutó `uv sync` o `uv run` entonces podemos activar el ambiente ejecutando en la terminal:
+
 ```bash
 source .venv/bin/activate
-
-```
-
-
-
-### Paso 3: Instalar dependencias
-
-Una vez activado el entorno, instala los paquetes necesarios:
-
-```bash
-pip install -r requirements.txt
-
 ```
 
 ---
 
-## 2. Configuración con `uv` (Recomendado)
+## 📂 Gestión de Git (Control de Versiones)
 
-`uv` es un gestor de paquetes de Python extremadamente rápido escrito en Rust. Úsalo para una instalación significativamente más veloz. ([UV webpage](https://docs.astral.sh/uv/)) Hay diferentes formas de isntalarlo pero si ya tenemos python solo tenemos que hacer:
+Para mantener la consistencia entre colaboradores, sigue estas reglas sobre qué incluir en tu repositorio:
 
-```bash
-pip install uv
-```
-### Paso 1: Crear el entorno virtual
-Inicializa el proyecto 
-```bash
-uv init
-```
-### Paso 1: Crear el entorno virtual
+### ✅ Lo que SÍ se sube (Commit)
 
-Crea un nuevo entorno virtual con:
+* **`pyproject.toml`**: Define las dependencias y la configuración del proyecto.
+* **`uv.lock`**: **Crucial.** Garantiza que todos los desarrolladores instalen exactamente las mismas versiones de las librerías.
+* **`.python-version`**: Indica a `uv` qué versión de Python debe utilizar para este proyecto.
 
-```bash
-uv venv
+### ❌ Lo que NO se sube (Gitignore)
 
-```
-
-### Paso 2: Activar el entorno
-
-El proceso de activación es similar al estándar:
-
-* **Windows (PowerShell):**
-```powershell
-.\.venv\Scripts\activate
-
-```
-
-
-* **macOS / Linux:**
-```bash
-source .venv/bin/activate
-
-```
-
-
-
-### Paso 3: Instalar dependencias
-
-Utiliza el comando optimizado de `uv` para instalar desde el archivo de requerimientos:
-
-```bash
-uv pip install -r requirements.txt
-
-```
+* **`.venv/`**: El entorno virtual es local y pesado; se reconstruye fácilmente.
+* **`__pycache__/`**: Archivos compilados de Python.
+* **`.uv/`**: Directorios de caché específicos de la herramienta.
 
 ---
 
-## Notas Adicionales
+## 💻 Clonando el Proyecto (Nueva Computadora)
 
-* Asegúrate de tener instalada una versión compatible de Python antes de comenzar.
-* Para salir del entorno virtual en cualquier momento, simplemente ejecuta el comando: `deactivate`.
+Si descargas un repositorio que ya utiliza `uv`, el proceso para empezar a trabajar es extremadamente sencillo:
 
+### 1. Sincronizar el proyecto
+
+En lugar de instalar manualmente, usa `uv sync`. Este comando leerá el `uv.lock`, creará el entorno virtual e instalará todas las dependencias exactas en un solo paso:
+
+```bash
+uv sync
 ```
+
+### 2. Ejecutar el código
+
+Para correr tus scripts asegurándote de que usan el entorno correcto:
+
+```bash
+uv run main.py
+```
+
+Para correr la aplicación de streamlit que se encuentra implementada dentro de `main.py` qjecutarías lo siguiente:
+
+
+```bash
+uv run streamlit run main.py
+```
+
+
+---
+
+## 🛠️ Resumen de comandos comunes
+
+| Acción | Comando |
+| --- | --- |
+| **Añadir una librería** | `uv add nombre-paquete` |
+| **Eliminar una librería** | `uv remove nombre-paquete` |
+| **Actualizar el lockfile** | `uv lock --upgrade` |
+| **Ejecutar comando de terminal** | `uv run <comando>` |
+| **Activar el ambiente virtual** | `source .venv/bin/activate` |
+
+> **Pro-tip:** `uv sync` es el comando más importante al colaborar, ya que mantiene tu `.venv` en perfecta sintonía con el archivo `uv.lock`.
+
+
