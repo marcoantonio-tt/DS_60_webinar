@@ -46,60 +46,7 @@ pip install -r requirements.txt
 
 ```
 
----
 
-## 2. Configuración con `uv` (Recomendado)
-
-`uv` es un gestor de paquetes de Python extremadamente rápido escrito en Rust. Úsalo para una instalación significativamente más veloz. ([UV webpage](https://docs.astral.sh/uv/)) Hay diferentes formas de isntalarlo pero si ya tenemos python solo tenemos que hacer:
-
-```bash
-pip install uv
-```
-### Paso 1: Crear el entorno virtual
-Inicializa el proyecto 
-```bash
-uv init
-```
-### Paso 1: Crear el entorno virtual
-
-Crea un nuevo entorno virtual con:
-
-```bash
-uv venv
-
-```
-
-### Paso 2: Activar el entorno
-
-El proceso de activación es similar al estándar:
-
-* **Windows (PowerShell):**
-```powershell
-.\.venv\Scripts\activate
-
-```
-
-
-* **macOS / Linux:**
-```bash
-source .venv/bin/activate
-
-```
-
-
-
-### Paso 3: Instalar dependencias
-
-Utiliza el comando optimizado de `uv` para instalar desde el archivo de requerimientos:
-
-```bash
-uv pip install -r requirements.txt
-
-```
-
----
-
-## Notas Adicionales
 
 * Asegúrate de tener instalada una versión compatible de Python antes de comenzar.
 * Para salir del entorno virtual en cualquier momento, simplemente ejecuta el comando: `deactivate`.
